@@ -1,0 +1,77 @@
+[
+  {
+    "question_id": "demo-1",
+    "question": "Which AWS service is primarily used for object storage?",
+    "options": [
+      "A. Amazon EC2",
+      "B. Amazon S3",
+      "C. Amazon RDS",
+      "D. Amazon VPC"
+    ],
+    "suggested_answer": "B",
+    "discussions": [
+      "Amazon S3 is AWS object storage designed for durability, scalability, and web-scale access.",
+      "EC2 is compute, RDS is managed databases, and VPC is networking."
+    ]
+  },
+  {
+    "question_id": "demo-2",
+    "question": "What is the AWS shared responsibility model about?",
+    "options": [
+      "A. AWS is responsible for everything",
+      "B. Customer is responsible for everything",
+      "C. AWS secures the cloud, customers secure what they put in the cloud",
+      "D. Responsibility is not defined"
+    ],
+    "suggested_answer": "C",
+    "discussions": [
+      "AWS handles security of the cloud infrastructure.",
+      "Customers handle security in the cloud such as IAM policies, data protection, and configuration."
+    ]
+  },
+  {
+    "question_id": "demo-3",
+    "question": "Which service can run serverless code in response to events?",
+    "options": [
+      "A. AWS Lambda",
+      "B. Amazon Route 53",
+      "C. Amazon CloudFront",
+      "D. AWS Artifact"
+    ],
+    "suggested_answer": "A",
+    "discussions": [
+      "AWS Lambda executes code without provisioning or managing servers.",
+      "Route 53 is DNS, CloudFront is CDN, and Artifact provides compliance reports."
+    ]
+  },
+  {
+    "question_id": "demo-4",
+    "question": "Which tool helps estimate AWS costs before deployment?",
+    "options": [
+      "A. AWS Pricing Calculator",
+      "B. AWS KMS",
+      "C. AWS WAF",
+      "D. AWS Shield"
+    ],
+    "suggested_answer": "A",
+    "discussions": [
+      "AWS Pricing Calculator lets you model and estimate monthly usage costs.",
+      "KMS is key management, and WAF/Shield are security services."
+    ]
+  },
+  {
+    "question_id": "demo-5",
+    "question": "Which statement best describes elasticity in cloud computing?",
+    "options": [
+      "A. Fixed capacity that never changes",
+      "B. Ability to automatically scale resources up or down with demand",
+      "C. Buying all hardware in advance",
+      "D. Restricting access to a single region"
+    ],
+    "suggested_answer": "B",
+    "discussions": [
+      "Elasticity means matching resources to real-time demand to improve efficiency.",
+      "It helps avoid over-provisioning and under-provisioning."
+    ]
+  }
+]

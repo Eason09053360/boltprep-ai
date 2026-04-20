@@ -51,9 +51,17 @@ Important: do not open `index.html` with `file://`; use a local server.
 ## Configuration
 
 - Upload a question bank JSON from the main page.
+- A ready-to-try sample is available at `docs/examples/sample-question-bank.json`.
 - Optional API key for translation:
   - Groq (recommended): starts with `gsk_`
   - Gemini
+
+## Try With Sample Data
+
+1. Start the app locally and open `http://localhost:5500/index.html`.
+2. Click the upload card (`1. 資料來源`).
+3. Select `docs/examples/sample-question-bank.json`.
+4. Start practicing immediately (translation API key is optional).
 
 ## Open Source
 
