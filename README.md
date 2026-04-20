@@ -11,11 +11,14 @@ A lightweight open-source quiz training app for certification prep.
 - Optional bilingual translation with Groq or Gemini API key
 
 ## Quick Start (Local)
-1. Open a terminal in this folder.
-2. Run:
-   c:/MyCodes/fastframe/.venv/bin/python.exe -m http.server 5500
+1. Clone this repository, then open a terminal in the project folder.
+2. Start a local server (choose one):
+   - python -m http.server 5500
+   - py -m http.server 5500 (Windows)
 3. Visit:
-   http://localhost:5500/index.html
+   - http://localhost:5500/index.html
+
+`localhost` means your own computer, so each contributor runs it locally after cloning.
 
 Note: Do not open index.html via file://, use a local server.
 
