@@ -34,8 +34,8 @@ window.BoltPrep.QuestionCard = function QuestionCard({
     const retakeCorrect = inWrongBookView && selectedAnswer === q.suggested_answer;
 
     return (
-        <div id={`question-card-${idx + 1}`} className="bg-white rounded-[2rem] border border-slate-200 shadow-sm overflow-hidden hover:border-blue-300 transition-all duration-500">
-            <div className="px-8 py-4 bg-slate-50/50 border-b flex justify-between items-center text-[10px] font-black text-slate-400 uppercase tracking-widest">
+        <div id={`question-card-${idx + 1}`} className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden hover:border-blue-300 transition-all duration-500">
+            <div className="px-5 py-2 bg-slate-50/50 border-b flex justify-between items-center text-[10px] font-black text-slate-400 uppercase tracking-widest">
                 <span>{isExamMode ? `Quiz Q${idx + 1}` : `Lib #${q.question_id}`} | {classifyQuestion(q)}</span>
                 <div className="flex items-center gap-3">
                     <button
@@ -53,17 +53,17 @@ window.BoltPrep.QuestionCard = function QuestionCard({
                     }} className="text-blue-600 font-bold hover:underline">Translate</button>}
                 </div>
             </div>
-            <div className="p-10">
-                <div className="lang-pair mb-8">
+            <div className="p-5">
+                <div className="lang-pair mb-4">
                     {t && <p className="lang-zh mb-2 animate-fade-in">{t.question}</p>}
                     <p className="lang-en font-medium leading-relaxed">{q.question}</p>
                 </div>
-                <div className="grid gap-3">
+                <div className="grid gap-2">
                     {q.options.map((opt, i) => {
                         const char = opt.trim().charAt(0);
                         const isSel = selectedAnswer === char;
                         const isCorrect = char === q.suggested_answer;
-                        let cls = "w-full text-left p-5 rounded-2xl border-2 transition-all flex items-start ";
+                        let cls = "w-full text-left px-4 py-3 rounded-xl border-2 transition-all flex items-start ";
                         if (!isAns) cls += "border-slate-50 hover:border-blue-400 bg-slate-50/20";
                         else if (isSel && isCorrect) cls += "border-emerald-500 bg-emerald-50";
                         else if (isSel && !isCorrect) cls += "border-rose-500 bg-rose-50";
@@ -72,7 +72,7 @@ window.BoltPrep.QuestionCard = function QuestionCard({
 
                         return (
                             <button key={i} onClick={() => handleAnswerSelect(q, char, inWrongBookView)} className={cls} disabled={!inWrongBookView && isAns}>
-                                <span className={`w-8 h-8 rounded-lg flex-shrink-0 flex items-center justify-center mr-4 font-bold ${isSel ? "bg-slate-800 text-white" : "bg-white border text-slate-300"}`}>{char}</span>
+                                <span className={`w-7 h-7 rounded-lg flex-shrink-0 flex items-center justify-center mr-3 font-bold ${isSel ? "bg-slate-800 text-white" : "bg-white border text-slate-300"}`}>{char}</span>
                                 <div className="lang-pair text-sm pt-0.5 leading-snug">
                                     {t && t.options[i] && <p className="lang-zh font-bold mb-1">{t.options[i].split(". ")[1] || t.options[i].substring(2)}</p>}
                                     <p className="lang-en">{opt.split(". ")[1] || opt.substring(2)}</p>

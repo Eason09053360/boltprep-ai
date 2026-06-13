@@ -18,4 +18,37 @@ html = re.sub(
 )
 
 st.set_page_config(page_title="BoltPrep AI", layout="wide")
-components.html(html, height=1200, scrolling=True)
+st.markdown(
+    """
+    <style>
+        header[data-testid="stHeader"],
+        [data-testid="stToolbar"],
+        [data-testid="stDecoration"],
+        #MainMenu,
+        footer {
+            display: none;
+        }
+
+        html, body, .stApp, [data-testid="stAppViewContainer"], [data-testid="stMain"] {
+            background: #f8fafc;
+        }
+
+        .block-container, .stMainBlockContainer {
+            max-width: none;
+            padding: 0 !important;
+        }
+
+        [data-testid="stVerticalBlock"] {
+            gap: 0;
+        }
+
+        iframe {
+            display: block;
+            width: 100%;
+            border: 0;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+components.html(html, height=950, scrolling=True)
