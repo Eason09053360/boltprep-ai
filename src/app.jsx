@@ -357,7 +357,7 @@ function App() {
 
             <div className="pt-16">
                 {lastProgress && Number.isInteger(lastProgress.questionNumber) && (
-                    <div className="mb-2 bg-white border border-slate-200 rounded-xl px-4 py-2 text-xs text-slate-600 flex items-center justify-between">
+                    <div className="mb-2 bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-slate-300 flex items-center justify-between">
                         <span>
                             已記錄進度：{lastProgress.isExamMode ? "測驗模式" : "題庫模式"} / {lastProgress.viewMode === "all" ? "全部" : (lastProgress.viewMode === "wrong" ? "錯題本" : "星號題")} / 第 {lastProgress.questionNumber} 題
                         </span>
@@ -425,9 +425,9 @@ function App() {
 
                 {!isExamMode && (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3 animate-fade-in">
-                        <div className="bg-white px-4 py-3 rounded-xl border border-slate-200 shadow-sm relative group overflow-hidden hover:border-blue-300 transition-all cursor-pointer">
+                        <div className="bg-slate-900 px-4 py-3 rounded-xl border border-slate-700 shadow-sm relative group overflow-hidden hover:border-blue-500 transition-all cursor-pointer">
                             <div className="flex items-center gap-3">
-                                <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${allQuestions.length > 0 ? "bg-blue-100 text-blue-600" : "bg-slate-100 text-slate-400"}`}>
+                                <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${allQuestions.length > 0 ? "bg-blue-950 text-blue-400" : "bg-slate-800 text-slate-400"}`}>
                                     <i className="fas fa-file-import text-lg"></i>
                                 </div>
                                 <div>
@@ -442,9 +442,9 @@ function App() {
                             }} />
                         </div>
 
-                        <div onClick={() => setShowConfigEditor(true)} className="bg-white px-4 py-3 rounded-xl border border-slate-200 shadow-sm hover:border-emerald-500 transition-all cursor-pointer group">
+                        <div onClick={() => setShowConfigEditor(true)} className="bg-slate-900 px-4 py-3 rounded-xl border border-slate-700 shadow-sm hover:border-emerald-500 transition-all cursor-pointer group">
                             <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-emerald-100 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                                <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-emerald-950 text-emerald-400 group-hover:bg-emerald-700 group-hover:text-white transition-colors">
                                     <div className="scale-75"><FastFrameLogo /></div>
                                 </div>
                                 <div>
@@ -458,7 +458,7 @@ function App() {
 
                 <div className="space-y-4">
                     {examResult && isExamMode && (
-                        <div className="bg-white p-8 rounded-[2rem] shadow-xl border-2 border-blue-50 animate-fade-in relative">
+                        <div className="bg-slate-900 p-8 rounded-[2rem] shadow-xl border-2 border-slate-700 animate-fade-in relative">
                             <div className="absolute top-8 right-8 scale-50 opacity-10"><FastFrameLogo /></div>
                             <h3 className="text-lg font-black mb-6 flex items-center gap-2"><i className="fas fa-chart-pie text-blue-600"></i> 能力衝刺評估</h3>
                             <div className="grid gap-4 relative z-10">
@@ -469,7 +469,7 @@ function App() {
                                             <div className="flex justify-between text-xs font-bold mb-1 uppercase text-slate-500">
                                                 <span>{cat}</span> <span>{score}% ({stat.correct}/{stat.total})</span>
                                             </div>
-                                            <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                                            <div className="w-full bg-slate-700 h-1.5 rounded-full overflow-hidden">
                                                 <div className={`h-full transition-all duration-1000 ${score < 70 ? "bg-rose-400" : "bg-emerald-400"}`} style={{ width: `${score}%` }}></div>
                                             </div>
                                         </div>
