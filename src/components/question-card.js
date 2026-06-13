@@ -34,8 +34,8 @@ window.BoltPrep.QuestionCard = function QuestionCard({
     const retakeCorrect = inWrongBookView && selectedAnswer === q.suggested_answer;
 
     return (
-        <div id={`question-card-${idx + 1}`} className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden hover:border-blue-300 transition-all duration-500">
-            <div className="px-5 py-2 bg-slate-50/50 border-b flex justify-between items-center text-[10px] font-black text-slate-400 uppercase tracking-widest">
+        <div id={`question-card-${idx + 1}`} className="bg-slate-900 rounded-xl border border-slate-700 shadow-sm overflow-hidden hover:border-blue-500 transition-all duration-500">
+            <div className="px-5 py-2 bg-slate-800/70 border-b border-slate-700 flex justify-between items-center text-[10px] font-black text-slate-400 uppercase tracking-widest">
                 <span>{isExamMode ? `Quiz Q${idx + 1}` : `Lib #${q.question_id}`} | {classifyQuestion(q)}</span>
                 <div className="flex items-center gap-3">
                     <button
@@ -50,7 +50,7 @@ window.BoltPrep.QuestionCard = function QuestionCard({
                             const res = await translateQuizData(q, apiKey);
                             setTranslated((prev) => ({ ...prev, [q.question_id]: res }));
                         } catch (e) { alert(e.message); }
-                    }} className="text-blue-600 font-bold hover:underline">Translate</button>}
+                    }} className="text-blue-400 font-bold hover:underline">Translate</button>}
                 </div>
             </div>
             <div className="p-5">
@@ -64,15 +64,15 @@ window.BoltPrep.QuestionCard = function QuestionCard({
                         const isSel = selectedAnswer === char;
                         const isCorrect = char === q.suggested_answer;
                         let cls = "w-full text-left px-4 py-3 rounded-xl border-2 transition-all flex items-start ";
-                        if (!isAns) cls += "border-slate-50 hover:border-blue-400 bg-slate-50/20";
-                        else if (isSel && isCorrect) cls += "border-emerald-500 bg-emerald-50";
-                        else if (isSel && !isCorrect) cls += "border-rose-500 bg-rose-50";
-                        else if (isCorrect) cls += "border-emerald-200 bg-emerald-50/50 opacity-80";
+                        if (!isAns) cls += "border-slate-700 hover:border-blue-500 bg-slate-800/60";
+                        else if (isSel && isCorrect) cls += "border-emerald-500 bg-emerald-950";
+                        else if (isSel && !isCorrect) cls += "border-rose-500 bg-rose-950";
+                        else if (isCorrect) cls += "border-emerald-700 bg-emerald-950/70 opacity-80";
                         else cls += "opacity-30";
 
                         return (
                             <button key={i} onClick={() => handleAnswerSelect(q, char, inWrongBookView)} className={cls} disabled={!inWrongBookView && isAns}>
-                                <span className={`w-7 h-7 rounded-lg flex-shrink-0 flex items-center justify-center mr-3 font-bold ${isSel ? "bg-slate-800 text-white" : "bg-white border text-slate-300"}`}>{char}</span>
+                                <span className={`w-7 h-7 rounded-lg flex-shrink-0 flex items-center justify-center mr-3 font-bold ${isSel ? "bg-blue-600 text-white" : "bg-slate-900 border border-slate-600 text-slate-300"}`}>{char}</span>
                                 <div className="lang-pair text-sm pt-0.5 leading-snug">
                                     {t && t.options[i] && <p className="lang-zh font-bold mb-1">{t.options[i].split(". ")[1] || t.options[i].substring(2)}</p>}
                                     <p className="lang-en">{opt.split(". ")[1] || opt.substring(2)}</p>
@@ -83,8 +83,8 @@ window.BoltPrep.QuestionCard = function QuestionCard({
                 </div>
 
                 {retakeCorrect && (
-                    <div className="mt-4 bg-emerald-50 border border-emerald-200 rounded-xl p-4">
-                        <p className="text-sm text-emerald-800 font-bold mb-2">這題你重做答對了，要移出錯題本嗎？</p>
+                    <div className="mt-4 bg-emerald-950 border border-emerald-800 rounded-xl p-4">
+                        <p className="text-sm text-emerald-200 font-bold mb-2">這題你重做答對了，要移出錯題本嗎？</p>
                         <div className="flex items-center gap-2">
                             <button
                                 onClick={() => removeFromWrongBook(q.question_id)}
@@ -98,7 +98,7 @@ window.BoltPrep.QuestionCard = function QuestionCard({
                                     delete next[normalizedId];
                                     return next;
                                 })}
-                                className="px-3 py-1.5 rounded-lg bg-white border border-emerald-200 text-emerald-700 text-xs font-bold hover:bg-emerald-100 transition"
+                                className="px-3 py-1.5 rounded-lg bg-slate-900 border border-emerald-800 text-emerald-300 text-xs font-bold hover:bg-slate-800 transition"
                             >
                                 先保留
                             </button>
@@ -107,16 +107,16 @@ window.BoltPrep.QuestionCard = function QuestionCard({
                 )}
 
                 {canShowDiscussion && (
-                    <div className="mt-6 border-t border-slate-100 pt-4">
+                    <div className="mt-6 border-t border-slate-700 pt-4">
                         <button
                             onClick={() => toggleDiscussion(q.question_id)}
-                            className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition text-left"
+                            className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 transition text-left"
                         >
                             <span className="text-xs font-black text-slate-500 uppercase tracking-widest">討論區 / Explanation</span>
                             <i className={`fas ${discussionOpen ? "fa-chevron-up" : "fa-chevron-down"} text-slate-400`}></i>
                         </button>
                         <div className={`${discussionOpen ? "collapse-open mt-3" : "collapse-content"}`}>
-                            <div className="space-y-4 text-sm bg-slate-50/70 border border-slate-100 rounded-xl p-4">
+                            <div className="space-y-4 text-sm bg-slate-800/70 border border-slate-700 rounded-xl p-4">
                                 {discussions.map((item, i) => (
                                     <div key={i} className="space-y-1">
                                         {translatedDiscussions[i] && (

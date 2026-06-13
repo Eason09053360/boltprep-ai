@@ -30,7 +30,7 @@ st.markdown(
         }
 
         html, body, .stApp, [data-testid="stAppViewContainer"], [data-testid="stMain"] {
-            background: #f8fafc;
+            background: #0b1120;
         }
 
         .block-container, .stMainBlockContainer {
