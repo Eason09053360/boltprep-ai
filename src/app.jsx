@@ -333,7 +333,7 @@ function App() {
     }, [currentQuestionList.length, isExamMode, viewMode]);
 
     return (
-        <div className="max-w-4xl mx-auto py-10 px-4">
+        <div className="max-w-6xl mx-auto px-3">
             <Navbar
                 FastFrameLogo={FastFrameLogo}
                 isExamMode={isExamMode}
@@ -355,9 +355,9 @@ function App() {
                 translateAll={translateAll}
             />
 
-            <div className="mt-20">
+            <div className="pt-16">
                 {lastProgress && Number.isInteger(lastProgress.questionNumber) && (
-                    <div className="mb-4 bg-white border border-slate-200 rounded-2xl px-4 py-3 text-xs text-slate-600 flex items-center justify-between">
+                    <div className="mb-2 bg-white border border-slate-200 rounded-xl px-4 py-2 text-xs text-slate-600 flex items-center justify-between">
                         <span>
                             已記錄進度：{lastProgress.isExamMode ? "測驗模式" : "題庫模式"} / {lastProgress.viewMode === "all" ? "全部" : (lastProgress.viewMode === "wrong" ? "錯題本" : "星號題")} / 第 {lastProgress.questionNumber} 題
                         </span>
@@ -424,15 +424,15 @@ function App() {
                 />
 
                 {!isExamMode && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10 animate-fade-in">
-                        <div className="bg-white p-7 rounded-[2rem] border border-slate-200 shadow-sm relative group overflow-hidden hover:border-blue-300 transition-all cursor-pointer">
-                            <div className="flex items-center gap-5">
-                                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-colors ${allQuestions.length > 0 ? "bg-blue-100 text-blue-600" : "bg-slate-100 text-slate-400"}`}>
-                                    <i className="fas fa-file-import text-2xl"></i>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3 animate-fade-in">
+                        <div className="bg-white px-4 py-3 rounded-xl border border-slate-200 shadow-sm relative group overflow-hidden hover:border-blue-300 transition-all cursor-pointer">
+                            <div className="flex items-center gap-3">
+                                <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${allQuestions.length > 0 ? "bg-blue-100 text-blue-600" : "bg-slate-100 text-slate-400"}`}>
+                                    <i className="fas fa-file-import text-lg"></i>
                                 </div>
                                 <div>
-                                    <p className="text-xs font-black text-slate-400 uppercase tracking-widest">1. 資料來源</p>
-                                    <p className="font-bold text-lg">{allQuestions.length > 0 ? `已載入 ${allQuestions.length} 題` : "上傳題庫 JSON"}</p>
+                                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">1. 資料來源</p>
+                                    <p className="font-bold text-sm">{allQuestions.length > 0 ? `已載入 ${allQuestions.length} 題` : "上傳題庫 JSON"}</p>
                                 </div>
                             </div>
                             <input type="file" className="absolute inset-0 opacity-0 cursor-pointer z-10" accept=".json" onChange={(e) => {
@@ -442,21 +442,21 @@ function App() {
                             }} />
                         </div>
 
-                        <div onClick={() => setShowConfigEditor(true)} className="bg-white p-7 rounded-[2rem] border border-slate-200 shadow-sm hover:border-emerald-500 transition-all cursor-pointer group">
-                            <div className="flex items-center gap-5">
-                                <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-emerald-100 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
-                                    <FastFrameLogo />
+                        <div onClick={() => setShowConfigEditor(true)} className="bg-white px-4 py-3 rounded-xl border border-slate-200 shadow-sm hover:border-emerald-500 transition-all cursor-pointer group">
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-emerald-100 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                                    <div className="scale-75"><FastFrameLogo /></div>
                                 </div>
                                 <div>
-                                    <p className="text-xs font-black text-slate-400 uppercase tracking-widest">2. 考綱設定</p>
-                                    <p className="font-bold text-lg">進入配置工作站</p>
+                                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">2. 考綱設定</p>
+                                    <p className="font-bold text-sm">進入配置工作站</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 )}
 
-                <div className="space-y-8">
+                <div className="space-y-4">
                     {examResult && isExamMode && (
                         <div className="bg-white p-8 rounded-[2rem] shadow-xl border-2 border-blue-50 animate-fade-in relative">
                             <div className="absolute top-8 right-8 scale-50 opacity-10"><FastFrameLogo /></div>
