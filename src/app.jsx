@@ -194,6 +194,36 @@ function App() {
         }));
     };
 
+    const translateAll = async () => {
+        if (!apiKey) {
+            alert("請先在設置中配置 API Key");
+            return;
+        }
+
+        const toTranslate = currentQuestionList.filter((q) => !translated[q.question_id]);
+        if (toTranslate.length === 0) {
+            alert("所有題目都已翻譯");
+            return;
+        }
+
+        const confirmed = window.confirm(`要翻譯 ${toTranslate.length} 題嗎？\n\n此操作會消耗 API 配額`);
+        if (!confirmed) return;
+
+        let successCount = 0;
+        let failCount = 0;
+        for (const q of toTranslate) {
+            try {
+                const res = await translateQuizData(q, apiKey);
+                setTranslated((prev) => ({ ...prev, [q.question_id]: res }));
+                successCount++;
+            } catch (e) {
+                failCount++;
+            }
+        }
+
+        alert(`翻譯完成\n成功: ${successCount} 題\n失敗: ${failCount} 題`);
+    };
+
     const addPracticeWrongQuestion = (questionId) => {
         const normalizedId = normalizeQuestionId(questionId);
         setPracticeWrongQuestionIds((prev) => {
@@ -321,11 +351,13 @@ function App() {
                 generateExam={generateExam}
                 setIsExamMode={setIsExamMode}
                 setShowSet={setShowSet}
+                apiKey={apiKey}
+                translateAll={translateAll}
             />
 
             <div className="mt-20">
                 {lastProgress && Number.isInteger(lastProgress.questionNumber) && (
-                    <div className="mb-4 bg-white border border-slate-200 rounded-2xl px-4 py-3 text-xs text-slate-600 flex items-center justify-between">
+                    <div className="mb-4 bg-white border border-amber-200 rounded-2xl px-4 py-3 text-xs text-slate-700 flex items-center justify-between">
                         <span>
                             已記錄進度：{lastProgress.isExamMode ? "測驗模式" : "題庫模式"} / {lastProgress.viewMode === "all" ? "全部" : (lastProgress.viewMode === "wrong" ? "錯題本" : "星號題")} / 第 {lastProgress.questionNumber} 題
                         </span>
@@ -393,14 +425,14 @@ function App() {
 
                 {!isExamMode && (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10 animate-fade-in">
-                        <div className="bg-white p-7 rounded-[2rem] border border-slate-200 shadow-sm relative group overflow-hidden hover:border-blue-300 transition-all cursor-pointer">
+                        <div className="bg-white p-7 rounded-[2rem] border border-amber-200 shadow-sm relative group overflow-hidden hover:border-blue-300 transition-all cursor-pointer">
                             <div className="flex items-center gap-5">
-                                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-colors ${allQuestions.length > 0 ? "bg-blue-100 text-blue-600" : "bg-slate-100 text-slate-400"}`}>
+                                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-colors ${allQuestions.length > 0 ? "bg-blue-100 text-blue-600" : "bg-amber-100 text-amber-600"}`}>
                                     <i className="fas fa-file-import text-2xl"></i>
                                 </div>
                                 <div>
-                                    <p className="text-xs font-black text-slate-400 uppercase tracking-widest">1. 資料來源</p>
-                                    <p className="font-bold text-lg">{allQuestions.length > 0 ? `已載入 ${allQuestions.length} 題` : "上傳題庫 JSON"}</p>
+                                    <p className="text-xs font-black text-slate-600 uppercase tracking-widest">1. 資料來源</p>
+                                    <p className="font-bold text-lg text-slate-800">{allQuestions.length > 0 ? `已載入 ${allQuestions.length} 題` : "上傳題庫 JSON"}</p>
                                 </div>
                             </div>
                             <input type="file" className="absolute inset-0 opacity-0 cursor-pointer z-10" accept=".json" onChange={(e) => {
@@ -410,14 +442,14 @@ function App() {
                             }} />
                         </div>
 
-                        <div onClick={() => setShowConfigEditor(true)} className="bg-white p-7 rounded-[2rem] border border-slate-200 shadow-sm hover:border-emerald-500 transition-all cursor-pointer group">
+                        <div onClick={() => setShowConfigEditor(true)} className="bg-white p-7 rounded-[2rem] border border-amber-200 shadow-sm hover:border-emerald-500 transition-all cursor-pointer group">
                             <div className="flex items-center gap-5">
                                 <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-emerald-100 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
                                     <FastFrameLogo />
                                 </div>
                                 <div>
-                                    <p className="text-xs font-black text-slate-400 uppercase tracking-widest">2. 考綱設定</p>
-                                    <p className="font-bold text-lg">進入配置工作站</p>
+                                    <p className="text-xs font-black text-slate-600 uppercase tracking-widest">2. 考綱設定</p>
+                                    <p className="font-bold text-lg text-slate-800">進入配置工作站</p>
                                 </div>
                             </div>
                         </div>
@@ -426,18 +458,18 @@ function App() {
 
                 <div className="space-y-8">
                     {examResult && isExamMode && (
-                        <div className="bg-white p-8 rounded-[2rem] shadow-xl border-2 border-blue-50 animate-fade-in relative">
+                        <div className="bg-white p-8 rounded-[2rem] shadow-xl border-2 border-amber-200 animate-fade-in relative">
                             <div className="absolute top-8 right-8 scale-50 opacity-10"><FastFrameLogo /></div>
-                            <h3 className="text-lg font-black mb-6 flex items-center gap-2"><i className="fas fa-chart-pie text-blue-600"></i> 能力衝刺評估</h3>
+                            <h3 className="text-lg font-black mb-6 text-slate-800 flex items-center gap-2"><i className="fas fa-chart-pie text-blue-600"></i> 能力衝刺評估</h3>
                             <div className="grid gap-4 relative z-10">
                                 {Object.entries(examResult).map(([cat, stat]) => {
                                     const score = stat.total > 0 ? Math.round((stat.correct / stat.total) * 100) : 0;
                                     return (
                                         <div key={cat}>
-                                            <div className="flex justify-between text-xs font-bold mb-1 uppercase text-slate-500">
+                                            <div className="flex justify-between text-xs font-bold mb-1 uppercase text-slate-600">
                                                 <span>{cat}</span> <span>{score}% ({stat.correct}/{stat.total})</span>
                                             </div>
-                                            <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                                            <div className="w-full bg-amber-100 h-1.5 rounded-full overflow-hidden">
                                                 <div className={`h-full transition-all duration-1000 ${score < 70 ? "bg-rose-400" : "bg-emerald-400"}`} style={{ width: `${score}%` }}></div>
                                             </div>
                                         </div>
@@ -490,7 +522,7 @@ function App() {
                             setExamWrongQuestionIds(wrongIds);
                             setViewMode("all");
                             window.scrollTo({ top: 0, behavior: "smooth" });
-                        }} className="w-full bg-slate-900 text-white py-6 rounded-[2rem] font-black text-xl shadow-2xl hover:scale-[1.02] transition active:scale-95 mb-20">交卷並生成報告</button>
+                        }} className="w-full bg-blue-600 text-white py-6 rounded-[2rem] font-black text-xl shadow-2xl hover:bg-blue-700 transition active:scale-95 mb-20">交卷並生成報告</button>
                     )}
                 </div>
             </div>
