@@ -7,6 +7,9 @@ window.BoltPrep.Navbar = function Navbar({
     allQuestions,
     viewMode,
     setViewMode,
+    categoryFilter,
+    setCategoryFilter,
+    categoryOptions,
     wrongCount,
     starredCount,
     currentQuestionList,
@@ -50,6 +53,26 @@ window.BoltPrep.Navbar = function Navbar({
                             >
                                 星號題({starredCount})
                             </button>
+                        </div>
+                    )}
+                    {(isExamMode ? quizSet.length > 0 : allQuestions.length > 0) && (
+                        <div className="flex items-center gap-2 bg-slate-900 border border-slate-700 rounded-xl px-2 py-1 shadow-sm">
+                            <i className="fas fa-search text-xs text-slate-400"></i>
+                            <select
+                                value={categoryFilter}
+                                onChange={(e) => {
+                                    setCategoryFilter(e.target.value);
+                                    setJumpNumber("");
+                                    window.scrollTo({ top: 0, behavior: "smooth" });
+                                }}
+                                className="max-w-44 lg:max-w-52 bg-slate-900 text-slate-200 text-xs outline-none cursor-pointer"
+                                title="依工作站領域篩選題目"
+                            >
+                                <option value="all">所有領域</option>
+                                {categoryOptions.map((category) => (
+                                    <option key={category} value={category}>{category}</option>
+                                ))}
+                            </select>
                         </div>
                     )}
                     {currentQuestionList.length > 0 && (

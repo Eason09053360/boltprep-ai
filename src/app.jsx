@@ -17,6 +17,7 @@ function App() {
     const [examSize, setExamSize] = useState(65);
     const [jumpNumber, setJumpNumber] = useState("");
     const [viewMode, setViewMode] = useState("all");
+    const [categoryFilter, setCategoryFilter] = useState("all");
     const [practiceWrongQuestionIds, setPracticeWrongQuestionIds] = useState(() => {
         try {
             const saved = localStorage.getItem("boltprep_practice_wrong_questions");
@@ -106,19 +107,30 @@ function App() {
         setAnswers({});
         setExamResult(null);
         setViewMode("all");
+        setCategoryFilter("all");
         setExamWrongQuestionIds([]);
         setWrongBookAnswers({});
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
-    const getQuestionListByMode = (mode) => {
+    const filterByCategory = (questions, category = categoryFilter) => {
+        if (category === "all") return questions;
+        return questions.filter((q) => classifyQuestion(q) === category);
+    };
+
+    const getQuestionListByMode = (mode, category = categoryFilter) => {
         const base = isExamMode ? quizSet : allQuestions;
         if (mode === "wrong") {
             const wrongIdSet = new Set(currentWrongQuestionIds.map(normalizeQuestionId));
-            return base.filter((q) => wrongIdSet.has(normalizeQuestionId(q.question_id)));
+            return filterByCategory(
+                base.filter((q) => wrongIdSet.has(normalizeQuestionId(q.question_id))),
+                category
+            );
         }
-        if (mode === "starred") return base.filter((q) => starredQuestions[q.question_id]);
-        return base;
+        if (mode === "starred") {
+            return filterByCategory(base.filter((q) => starredQuestions[q.question_id]), category);
+        }
+        return filterByCategory(base, category);
     };
 
     const getCurrentQuestionList = () => {
@@ -129,6 +141,7 @@ function App() {
         setLastProgress({
             isExamMode,
             viewMode: sourceMode,
+            categoryFilter,
             questionNumber,
             updatedAt: Date.now()
         });
@@ -164,7 +177,8 @@ function App() {
             return;
         }
 
-        const targetList = getQuestionListByMode(lastProgress.viewMode);
+        const savedCategory = lastProgress.categoryFilter || "all";
+        const targetList = getQuestionListByMode(lastProgress.viewMode, savedCategory);
         if (targetList.length === 0) {
             alert("上次所在視圖目前沒有題目可顯示。");
             return;
@@ -172,6 +186,7 @@ function App() {
 
         const targetNumber = Math.min(lastProgress.questionNumber, targetList.length);
         setViewMode(lastProgress.viewMode);
+        setCategoryFilter(savedCategory);
         setJumpNumber(String(targetNumber));
 
         setTimeout(() => {
@@ -269,6 +284,12 @@ function App() {
     const currentQuestionList = getCurrentQuestionList();
     const wrongCount = getQuestionListByMode("wrong").length;
     const starredCount = getQuestionListByMode("starred").length;
+    const categoryOptions = Array.from(new Set([...Object.keys(syllabus || {}), "📁 Others / General"]));
+
+    useEffect(() => {
+        if (categoryFilter === "all" || categoryOptions.includes(categoryFilter)) return;
+        setCategoryFilter("all");
+    }, [syllabus, categoryFilter]);
 
     useEffect(() => {
         if (!isExamMode || quizSet.length === 0) return;
@@ -313,6 +334,7 @@ function App() {
                     prev &&
                     prev.isExamMode === isExamMode &&
                     prev.viewMode === viewMode &&
+                    prev.categoryFilter === categoryFilter &&
                     prev.questionNumber === bestIndex
                 ) {
                     return prev;
@@ -321,6 +343,7 @@ function App() {
                 return {
                     isExamMode,
                     viewMode,
+                    categoryFilter,
                     questionNumber: bestIndex,
                     updatedAt: Date.now()
                 };
@@ -330,7 +353,7 @@ function App() {
         trackProgress();
         window.addEventListener("scroll", trackProgress, { passive: true });
         return () => window.removeEventListener("scroll", trackProgress);
-    }, [currentQuestionList.length, isExamMode, viewMode]);
+    }, [currentQuestionList.length, isExamMode, viewMode, categoryFilter]);
 
     return (
         <div className="max-w-6xl mx-auto px-3">
@@ -341,6 +364,9 @@ function App() {
                 allQuestions={allQuestions}
                 viewMode={viewMode}
                 setViewMode={setViewMode}
+                categoryFilter={categoryFilter}
+                setCategoryFilter={setCategoryFilter}
+                categoryOptions={categoryOptions}
                 wrongCount={wrongCount}
                 starredCount={starredCount}
                 currentQuestionList={currentQuestionList}
@@ -359,7 +385,7 @@ function App() {
                 {lastProgress && Number.isInteger(lastProgress.questionNumber) && (
                     <div className="mb-2 bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-slate-300 flex items-center justify-between">
                         <span>
-                            已記錄進度：{lastProgress.isExamMode ? "測驗模式" : "題庫模式"} / {lastProgress.viewMode === "all" ? "全部" : (lastProgress.viewMode === "wrong" ? "錯題本" : "星號題")} / 第 {lastProgress.questionNumber} 題
+                            已記錄進度：{lastProgress.isExamMode ? "測驗模式" : "題庫模式"} / {lastProgress.viewMode === "all" ? "全部" : (lastProgress.viewMode === "wrong" ? "錯題本" : "星號題")} / {lastProgress.categoryFilter === "all" || !lastProgress.categoryFilter ? "所有領域" : lastProgress.categoryFilter} / 第 {lastProgress.questionNumber} 題
                         </span>
                         <button onClick={handleResumeProgress} className="text-blue-600 font-bold hover:underline">立即返回</button>
                     </div>
@@ -503,6 +529,12 @@ function App() {
                             toggleDiscussion={toggleDiscussion}
                         />
                     ))}
+
+                    {(isExamMode ? quizSet.length > 0 : allQuestions.length > 0) && currentQuestionList.length === 0 && (
+                        <div className="bg-slate-900 border border-slate-700 rounded-xl px-6 py-10 text-center text-slate-400">
+                            此領域在目前視圖中沒有題目。
+                        </div>
+                    )}
 
                     {isExamMode && !examResult && quizSet.length > 0 && (
                         <button onClick={() => {
